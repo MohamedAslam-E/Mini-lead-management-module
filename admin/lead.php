@@ -71,7 +71,6 @@ if (isset($_SESSION['user_type']) && $_SESSION['user_type'] == 'admin') {
                 <div class="mb-3">
                     <label for="assigned_to" class="form-label">Assigned To:</label>
                     <select id="assigned_to" name="assigned_to" class="form-select">
-                        <!-- Assuming you have employees listed in the users table -->
                         <?php
                         $employee_query = "SELECT * FROM users WHERE user_type = 'employee'";
                         $employee_result = mysqli_query($conn, $employee_query);

@@ -33,6 +33,11 @@ mysqli_close($conn);
                                 <strong>Employee sign-in= </strong>username : <strong>employee1</strong>, pass:<strong>employee1123</strong>,usertype:employee
                             </p>
                         </div>
+                        <div>
+                            <p>
+                                <strong>Employee2 sign-in= </strong>username : <strong>employee2</strong>, pass:<strong>employee2123</strong>,usertype:employee
+                            </p>
+                        </div>
                     </div>
                     <?php
                     if (isset($_SESSION['error_message'])) {
