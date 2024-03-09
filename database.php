@@ -7,5 +7,5 @@ $db_name = "lead";
 $conn = mysqli_connect($db_server, $db_user, $db_ps, $db_name);
 
 if (!$conn) {
-  "connection error";
+  "database connection error";
 }

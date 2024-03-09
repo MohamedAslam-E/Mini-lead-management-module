@@ -10,7 +10,7 @@ $conn = mysqli_connect($db_server, $db_user, $db_password, $db_name);
 
 // Check connection
 if (!$conn) {
-    die("Connection failed: ");
+    die(" db Connection failed");
 }
 
 $username = $_POST['username'];
