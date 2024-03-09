@@ -34,6 +34,11 @@ mysqli_close($conn);
                             </p>
                         </div>
                     </div>
+                    <?php
+                    if (isset($_SESSION['error_message'])) {
+                        echo '<div class="alert alert-danger" role="alert">' . $_SESSION['error_message'] . '</div>';
+                    }
+                    ?>
                     <div class="mb-3">
                         <label for="username" class="form-label">Username:</label>
                         <input type="text" id="username" name="username" class="form-control" required>
@@ -41,13 +46,6 @@ mysqli_close($conn);
                     <div class="mb-3">
                         <label for="password" class="form-label">Password:</label>
                         <input type="password" id="password" name="password" class="form-control" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="user_type" class="form-label">User Type:</label>
-                        <select id="user_type" name="user_type" class="form-select" required>
-                            <option value="admin">Admin</option>
-                            <option value="employee">Employee</option>
-                        </select>
                     </div>
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary">Login</button>

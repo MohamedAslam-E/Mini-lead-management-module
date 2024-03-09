@@ -1,42 +1,49 @@
 <?php
 session_start();
 
-$db_server = "localhost";
-$db_user = "root";
-$db_password = "";
-$db_name = "lead";
-
-$conn = mysqli_connect($db_server, $db_user, $db_password, $db_name);
-
-// Check connection
-if (!$conn) {
-    die(" db Connection failed");
-}
+include('./database.php');
 
 $username = $_POST['username'];
 $password = $_POST['password'];
-$user_type = $_POST['user_type'];
 
-$sql = "SELECT * FROM users WHERE username = '$username' AND user_type = '$user_type'";
-$result = $conn->query($sql);
+$sql_admin = "SELECT * FROM users WHERE username = '$username' AND user_type = 'admin'";
+$result_admin = $conn->query($sql_admin);
 
-if ($result->num_rows > 0) {
-    // User found, verify password and user type
-    $row = $result->fetch_assoc();
-    if (password_verify($password, $row['password']) && $row['user_type'] == $user_type) {
-        // Password and user type are correct, set session and redirect
-        $_SESSION['user_type'] = $user_type;
-        $_SESSION['user_id'] = $row['id'];
-        if ($user_type == 'admin') {
-            header("Location: admin/admin_dashboard.php");
-        } elseif ($user_type == 'employee') {
-            header("Location: employee/employee_dashboard.php");
-        }
+$sql_employee = "SELECT * FROM users WHERE username = '$username' AND user_type = 'employee'";
+$result_employee = $conn->query($sql_employee);
+
+if ($result_admin->num_rows > 0) {
+    // Admin found, verify password
+    $row = $result_admin->fetch_assoc();
+    if (password_verify($password, $row['password'])) {
+        // Password is correct, set session and redirect to admin dashboard
+        $_SESSION['user_type'] = 'admin';
+        header("Location: admin/admin_dashboard.php");
+        exit();
     } else {
-        echo "The username or password or user type you entered isn't connected to an account.";
+        $_SESSION['error_message'] = "The username or password you entered isn't connected to an admin account.";
+        header("Location: index.php");
+        exit();
+    }
+} elseif ($result_employee->num_rows > 0) {
+    // Employee found, verify password
+    $row = $result_employee->fetch_assoc();
+    if (password_verify($password, $row['password'])) {
+        // Password is correct, set session and redirect to employee dashboard
+        $_SESSION['user_type'] = 'employee';
+        $_SESSION['user_id'] = $row['id'];
+        header("Location: employee/employee_dashboard.php");
+        exit();
+    } else {
+        $_SESSION['error_message'] = "The username or password you entered isn't connected to an employee account.";
+        header("Location: index.php");
+        exit();
     }
 } else {
-    echo "User not found";
+    $_SESSION['error_message'] = "User not found.";
+    header("Location: index.php");
+    exit();
 }
 
 mysqli_close($conn);
+?>
